@@ -5,6 +5,9 @@ function ekle() {
     if (!inputAd.value || !inputSoyad.value || !inputTelefon.value) {
         alert("Lütfen eksik alanları doldurun!")
     }
+    else if (!(inputTelefon.value % 5 >= 0) || inputTelefon.value.length != 11) {
+        alert("Lütfen düzgün bir telefon numarası değeri girin!")
+    }
     else {
         var table = document.getElementById("table")
         var rowCount = table.rows.length
@@ -32,16 +35,28 @@ function sil(btn) {
 function kaydet(btn) {
     var row = btn.parentNode.parentNode;
     var rowCells = row.cells
-
-    for (let i = 0; i < rowCells.length; i++) {
-        if (rowCells.length - 1 != i) {
-            var inputText = rowCells[i].childNodes[0].value
-            rowCells[i].innerHTML = inputText
-        }
-        else {
-            rowCells[i].innerHTML = '<button type="button"  onclick="duzenle(this)" class="btn btn-success">Düzenle</button><button type="button"  onclick="sil(this)" class="btn btn-danger">Sil</button>'
+    var isEmpty = false
+    for (let index = 0; index < rowCells.length - 1; index++) {
+        let inputText = rowCells[index].childNodes[0].value
+        if ((!inputText) || !(rowCells[rowCells.length - 2].childNodes[0].value % 5 >= 0) || rowCells[rowCells.length - 2].childNodes[0].value.length != 11) {
+            isEmpty = true
         }
     }
+    if (!isEmpty) {
+        for (let i = 0; i < rowCells.length; i++) {
+            if (rowCells.length - 1 != i) {
+                var inputText = rowCells[i].childNodes[0].value
+                rowCells[i].innerHTML = inputText
+            }
+            else {
+                rowCells[i].innerHTML = '<button type="button"  onclick="duzenle(this)" class="btn btn-success">Düzenle</button><button type="button"  onclick="sil(this)" class="btn btn-danger">Sil</button>'
+            }
+        }
+    }
+    else {
+        alert("Düzenlemek istediğiniz alanlar eksik veya hatalı bilgi içeriyor.")
+    }
+
 }
 
 function duzenle(btn) {
